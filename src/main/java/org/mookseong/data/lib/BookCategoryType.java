@@ -1,6 +1,6 @@
 package org.mookseong.data.lib;
 
-public enum BookListType {
+public enum BookCategoryType {
     BEST_BOOK,
     NEW_BOOK,
     EBOOK_BOOK,

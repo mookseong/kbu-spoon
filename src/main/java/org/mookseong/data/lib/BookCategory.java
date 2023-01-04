@@ -6,8 +6,8 @@ package org.mookseong.data.lib;
  * @param bookImg   책 커버 주소를 담고 있습니다.<p>이미지 주소가 없다면 일반 주소로 변경합니다.</p>
  * @param bookTitle 책 제목을 담고 있습니다.
  */
-public record BookInfoList(String bookURL, String bookImg, String bookTitle) {
-    public BookInfoList {
+public record BookCategory(String bookURL, String bookImg, String bookTitle) {
+    public BookCategory {
         bookURL = "https://lib.bible.ac.kr" + bookURL;
         if (!bookImg.contains("https")) {
             bookImg = "https://lib.bible.ac.kr" + bookImg;
