@@ -13,42 +13,44 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ParserBookCategory {
-    String URL = "https://lib.bible.ac.kr";
+    String searchURL = "https://lib.bible.ac.kr/Search";
+    String homeURL = "https://lib.bible.ac.kr";
     Document document;
+    BookCategoryType documentType;
 
     /**
-     * 메소드가 처음 초기화시 default 값으로 KBU 도서관 홈페이지에서 정보를 가져와 {@link Document}를 초기화를 진행한다.
+     * 메소드가 처음 초기화시 default 값으로 {@link BookCategoryType#RECENT_LOAN_BOOK}제외한 KBU 도서관 홈페이지에서 정보를 가져와 {@link Document}를 초기화를 진행한다.
      */
     public ParserBookCategory() {
         try {
-            Connection conn = Jsoup.connect(URL);
+            documentType = BookCategoryType.BEST_BOOK;
+            Connection conn = Jsoup.connect(homeURL);
             document = conn.get();
         } catch (IOException e) {
             throw new RuntimeException("사이트 문서화 실패", e);
         }
     }
 
-    /**
-     * 도서관 홈페이지에서 인기도서, 신작도서, 전자도서, 추천도서를 추출하여 반환한다.
-     *
-     * @param model 추출하고자 하는 책 정보 요청한다. <p>추출 가능한 타입은 {@link BookCategoryType} 타입만 가능하다.</p>
-     * @return 반환시 {@link ArrayList<BookCategory>}형식으로 반환된다.
-     */
-    public ArrayList<BookCategory> getBookList(BookCategoryType model) {
-        ArrayList<BookCategory> bookCategories = new ArrayList<>();
-        Element libHome = getCategoryByDocument();
-        Elements bookListByDocument = getBookListByDocument(libHome, model);
 
-        for (Element List : bookListByDocument) {
-            bookCategories.add(
-                    new BookCategory(
-                            List.attr("href"), //상세 정보를 이동하는 주소 등록
-                            List.getElementsByTag("img").attr("src"), //책 표지 정보 URL 형식으로 반환
-                            List.getElementsByTag("span").text() // 책 제목
-                    )
-            );
+
+    /**
+     * 도서관 홈페이지 정보를 새로 불러오거나 변경할때 사용합니다.
+     *
+     * @param model 변경하자 하는 모델 정보를 입력 받습니다.
+     */
+    public void setParsingURL(BookCategoryType model) {
+        try {
+            Connection conn;
+            documentType = model;
+            if (model == BookCategoryType.RECENT_LOAN_BOOK) {
+                conn = Jsoup.connect(searchURL);
+            } else {
+                conn = Jsoup.connect(homeURL);
+            }
+            document = conn.get();
+        } catch (IOException e) {
+            throw new RuntimeException("사이트 문서화 실패", e);
         }
-        return bookCategories;
     }
 
     /**
@@ -68,10 +70,14 @@ public class ParserBookCategory {
     }
 
     /**
-     * 도서관 홈페이지에서 필요한 부분을 추출한다.
+     * 도서관 홈페이지에서 필요한 부분을 추출한다.<p>default 값으로는 {@link BookCategoryType#RECENT_LOAN_BOOK}제외하고는 동일한 값으로 처리됩니다.</p>
+     *
      * @return 책 정보 위치만 추출후 return 한다.
      */
     public Element getCategoryByDocument() {
+        if (documentType == BookCategoryType.RECENT_LOAN_BOOK) {
+            return document.getElementsByClass("user-welcome-page-thumb").get(0);
+        }
         return document.getElementsByClass("col-md-9 sponge-main-book book").get(0);
     }
 
