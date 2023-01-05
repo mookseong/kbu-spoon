@@ -11,4 +11,4 @@ kbu-spoon는 Java로 새롭개 만들어진 라이브러입니다.
 
 
 ## License
-[MIT License](LICENSE).
+[MIT License](License).
