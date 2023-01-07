@@ -5,11 +5,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.mookseong.data.lib.BookCategory;
 import org.mookseong.data.lib.BookCategoryType;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ParserBookCategory {
@@ -30,8 +28,6 @@ public class ParserBookCategory {
             throw new RuntimeException("사이트 문서화 실패", e);
         }
     }
-
-
 
     /**
      * 도서관 홈페이지 정보를 새로 불러오거나 변경할때 사용합니다.
@@ -59,7 +55,7 @@ public class ParserBookCategory {
      * @param model enum 형식으로 지정된  {@link BookCategoryType} 형식으로 받는다
      * @return {@link BookCategoryType} 형식으로 된 값을 {@link String}형식인 값으로 변환해준다.
      */
-    public String BookType(BookCategoryType model) {
+    private String BookType(BookCategoryType model) {
         return switch (model) {
             case NEW_BOOK -> "book-new";
             case BEST_BOOK -> "book-best";
@@ -89,7 +85,11 @@ public class ParserBookCategory {
      * @return 추출된 값을 추출후 {@link Elements}형식으로 return 한다 <p>단. 모든 정보를 가공하지 않고 태그 a 형식만 가지고 return 한다</p>
      */
     public Elements getBookListByDocument(Element element, BookCategoryType model) {
+        if (model != documentType){
+            setParsingURL(model);
+        }
         return Objects.requireNonNull(element.getElementById(BookType(model))).select("ul").select("li").select("a");
+
     }
 
 }
