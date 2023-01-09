@@ -1,4 +1,10 @@
-package org.mookseong.lib;
+package org.spoon.lib;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.spoon.lib.data.NaverBookApi;
+import org.spoon.lib.data.NaverBookError;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -10,25 +16,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NaverBookSearchAPi {
-    public void APi(String[] args) {
-        String clientId = "000"; //애플리케이션 클라이언트 아이디
-        String clientSecret = "000"; //애플리케이션 클라이언트 시크릿
 
-        String text = URLEncoder.encode("9791195522125", StandardCharsets.UTF_8);
-        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text;    // JSON 결과
+    /**
+     * 책정보를 갖고
+     * @param clientId 애플리케이션 클라이언트 아이디
+     * @param clientSecret 애플리케이션 클라이언트 시크릿
+     * @param isbn 책제목 또는 isbn 정보
+     * @return 네이버에서 요청된 정보를 반환합니다.
+     */
+    public NaverBookApi getNaverbookApi(String clientId, String clientSecret, String isbn)  {
+        String text = URLEncoder.encode(isbn, StandardCharsets.UTF_8);
+        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text;
 
+        Map<String, String>  requestHeaders = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        NaverBookApi bookApi = null;
 
-        Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
         String responseBody = get(apiURL,requestHeaders);
 
+        try {
+            bookApi = objectMapper.readValue(responseBody, NaverBookApi.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("json 형식 변환 실패 : " +  responseBody, e);
+        }
+        return bookApi;
 
-        System.out.println(responseBody);
     }
 
-
-    private static String get(String apiUrl, Map<String, String> requestHeaders){
+    private String get(String apiUrl, Map<String, String> requestHeaders){
         HttpURLConnection con = connect(apiUrl);
         try {
             con.setRequestMethod("GET");
@@ -50,7 +67,7 @@ public class NaverBookSearchAPi {
     }
 
 
-    private static HttpURLConnection connect(String apiUrl){
+    private HttpURLConnection connect(String apiUrl){
         try {
             URL url = new URL(apiUrl);
             return (HttpURLConnection)url.openConnection();
@@ -62,7 +79,7 @@ public class NaverBookSearchAPi {
     }
 
 
-    private static String readBody(InputStream body){
+    private String readBody(InputStream body){
         InputStreamReader streamReader = new InputStreamReader(body);
 
 
