@@ -1,11 +1,11 @@
-package org.mookseong.lib;
+package org.spoon.lib;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.mookseong.data.lib.BookKeepInfo;
+import org.spoon.lib.data.BookKeepInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -197,12 +197,11 @@ public class ParserBookSearch {
      */
     public ArrayList<BookKeepInfo> getKeepBookList(Elements elementsIndex) {
         ArrayList<BookKeepInfo> infoArrayList = new ArrayList<>();
-        for (Element element : elementsIndex) {
-            element.getElementsByClass("table-striped sponge-table-default")
-                    .select("tbody")
-                    .select("tr")
-                    .forEach(i -> infoArrayList.add(addBookKeInfo(i)));
-        }
+        elementsIndex.forEach(element ->
+                element.getElementsByClass("table-striped sponge-table-default")
+                        .select("tbody > tr")
+                        .forEach(i -> infoArrayList.add(addBookKeInfo(i)))
+        );
         return infoArrayList;
     }
 
@@ -217,10 +216,7 @@ public class ParserBookSearch {
     public ArrayList<BookKeepInfo> getKeepBookList(Elements elements, int index) {
         ArrayList<BookKeepInfo> infoArrayList = new ArrayList<>();
         Elements bookKeep = elements.get(index).getElementsByClass("table-striped sponge-table-default").select("tbody").select("tr");
-        for (Element element : bookKeep) {
-            infoArrayList.add(addBookKeInfo(element));
-
-        }
+        bookKeep.forEach(i -> infoArrayList.add(addBookKeInfo(i)));
         return infoArrayList;
     }
 

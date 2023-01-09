@@ -1,11 +1,11 @@
-package org.mookseong.lib;
+package org.spoon.lib;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.mookseong.data.lib.BookCategoryType;
+import org.spoon.lib.data.BookCategoryType;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -88,7 +88,7 @@ public class ParserBookCategory {
         if (model != documentType){
             setParsingURL(model);
         }
-        return Objects.requireNonNull(element.getElementById(BookType(model))).select("ul").select("li").select("a");
+        return Objects.requireNonNull(element.getElementById(BookType(model))).select("ul > li > a");
 
     }
 

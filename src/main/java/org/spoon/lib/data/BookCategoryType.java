@@ -1,4 +1,4 @@
-package org.mookseong.data.lib;
+package org.spoon.lib.data;
 
 public enum BookCategoryType {
     BEST_BOOK,

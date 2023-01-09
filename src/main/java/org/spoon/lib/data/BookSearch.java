@@ -1,4 +1,4 @@
-package org.mookseong.data.lib;
+package org.spoon.lib.data;
 
 /**
  * kbu 도서관 검색 정보입니다.
