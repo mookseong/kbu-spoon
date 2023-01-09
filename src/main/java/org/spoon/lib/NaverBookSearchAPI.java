@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NaverBookSearchAPi {
+public class NaverBookSearchAPI {
 
     /**
      * 책정보를 갖고

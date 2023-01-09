@@ -71,9 +71,6 @@ public class ParserBookCategory {
      * @return 책 정보 위치만 추출후 return 한다.
      */
     public Element getCategoryByDocument() {
-        if (documentType == BookCategoryType.RECENT_LOAN_BOOK) {
-            return document.getElementsByClass("user-welcome-page-thumb").get(0);
-        }
         return document.getElementsByClass("col-md-9 sponge-main-book book").get(0);
     }
 
@@ -85,9 +82,6 @@ public class ParserBookCategory {
      * @return 추출된 값을 추출후 {@link Elements}형식으로 return 한다 <p>단. 모든 정보를 가공하지 않고 태그 a 형식만 가지고 return 한다</p>
      */
     public Elements getBookListByDocument(Element element, BookCategoryType model) {
-        if (model != documentType){
-            setParsingURL(model);
-        }
         return Objects.requireNonNull(element.getElementById(BookType(model))).select("ul > li > a");
 
     }
