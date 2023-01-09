@@ -1,10 +1,8 @@
 package org.spoon.lib;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.spoon.lib.data.NaverBookApi;
-import org.spoon.lib.data.NaverBookError;
+import org.spoon.lib.data.NaverBookInformation;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -24,20 +22,20 @@ public class NaverBookSearchAPi {
      * @param isbn 책제목 또는 isbn 정보
      * @return 네이버에서 요청된 정보를 반환합니다.
      */
-    public NaverBookApi getNaverbookApi(String clientId, String clientSecret, String isbn)  {
+    public NaverBookInformation getNaverbookApi(String clientId, String clientSecret, String isbn)  {
         String text = URLEncoder.encode(isbn, StandardCharsets.UTF_8);
         String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text;
 
         Map<String, String>  requestHeaders = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        NaverBookApi bookApi = null;
+        NaverBookInformation bookApi = null;
 
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
         String responseBody = get(apiURL,requestHeaders);
 
         try {
-            bookApi = objectMapper.readValue(responseBody, NaverBookApi.class);
+            bookApi = objectMapper.readValue(responseBody, NaverBookInformation.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("json 형식 변환 실패 : " +  responseBody, e);
         }

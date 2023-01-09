@@ -16,6 +16,10 @@ import java.util.function.Predicate;
 public class ParserBookInformation {
     Document document;
 
+    /**
+     * 메소드 생성시 검색 대상의 정보를 미리 생성합니다.
+     * @param SearchURL 책 정보를 담고 있는 url
+     */
     public ParserBookInformation(String SearchURL) {
         try {
             Connection conn = Jsoup.connect(SearchURL);
@@ -61,17 +65,22 @@ public class ParserBookInformation {
         Elements elements = document.getElementsByClass("col-md-10 detail-table-right");
         Map<String, String> toBookInfoList = new HashMap<>();
         List<String> bookInfoTitle = List.of("자료유형", "청구기호", "ISBN", "DDC", "서명/저자", "가격", "발행사항");
+
         elements.select("dl")
                 .stream()
                 .filter(element ->
                         bookInfoTitle
                                 .stream()
-                                .anyMatch(
-                                        Predicate.isEqual(element.select("dt").text())
-                                )
+                                .anyMatch(Predicate.isEqual(element.select("dt").text()))
                 )
-                .forEach(i -> toBookInfoList.put(i.select("dt").text().trim(), i.select("dd").text().trim()));
+                .forEach(element -> {
+                    if (element.select("dt").text().trim().equals("ISBN") &&toBookInfoList.containsKey("ISBN")){
+                        return;
+                    }
+                    toBookInfoList.put(element.select("dt").text().trim(), element.select("dd").text().trim());
+                });
         toBookInfoList.put("저자", toBookInfoList.get("서명/저자").split("/")[1]);
+        toBookInfoList.put("ISBN", toBookInfoList.get("ISBN").split(" ")[0]);
         toBookInfoList.remove("서명/저자");
         return toBookInfoList;
     }
@@ -85,11 +94,11 @@ public class ParserBookInformation {
         ArrayList<BookCategory> bookCategories = new ArrayList<>();
         Elements elementsByClass = document.getElementsByClass("sponge-detail-book").get(0).select("div:nth-child(1) > div > ul > li > a");
         elementsByClass.forEach(
-                i -> bookCategories.add(
+                element -> bookCategories.add(
                         new BookCategory(
-                                i.attr("href"),
-                                i.getElementsByTag("img").attr("src"),
-                                i.attr("title")
+                                element.attr("href"),
+                                element.getElementsByTag("img").attr("src"),
+                                element.attr("title")
 
                         )
                 )
