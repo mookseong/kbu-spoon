@@ -22,6 +22,12 @@ publishing {
     }
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 
 dependencies {
     implementation 'org.jetbrains:annotations:23.0.0'
