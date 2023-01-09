@@ -5,6 +5,7 @@ package org.spoon.lib.data;
  * @param title 책 제목
  * @param image 책표지 이미지 주소
  * @param isbn 책 isbn
+ * @param number 도서 청구번호
  * @param ddc 책 ddc
  * @param author 저자
  * @param discount 책가격
@@ -17,6 +18,7 @@ public record BookInformation(
         String title,
         String image,
         String isbn,
+        String number,
         String ddc,
         String author,
         String discount,
