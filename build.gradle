@@ -1,13 +1,27 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'maven-publish'
 }
 
-group 'org.mookseong'
-version '1.0-SNAPSHOT'
+group 'org.spoon'
+version '0.1.0-alpha'
 
 repositories {
     mavenCentral()
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.spoon'
+            artifactId = 'kbu-spoon'
+            version = '0.1.0-alpha'
+
+            from components.java
+        }
+    }
+}
+
 
 dependencies {
     implementation 'org.jetbrains:annotations:23.0.0'
