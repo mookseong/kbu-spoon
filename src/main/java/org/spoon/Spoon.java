@@ -3,15 +3,14 @@ package org.spoon;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import org.spoon.lib.NaverBookSearchAPI;
-import org.spoon.lib.ParserBookInformation;
-import org.spoon.lib.data.*;
 import org.spoon.lib.ParserBookCategory;
+import org.spoon.lib.ParserBookInformation;
 import org.spoon.lib.ParserBookSearch;
+import org.spoon.lib.data.*;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Spoon {
 
@@ -124,16 +123,16 @@ public class Spoon {
 
     private BookInformation matchBookInfo(Map<String, String> parserInfo, NaverBookInformation naverBookInformation){
         return new BookInformation(
-                naverBookInformation.items().get(0).title(),
-                naverBookInformation.items().get(0).image(),
-                naverBookInformation.items().get(0).isbn(),
+                naverBookInformation.items.get(0).title,
+                naverBookInformation.items.get(0).image,
+                naverBookInformation.items.get(0).isbn,
                 parserInfo.get("청구기호"),
                 parserInfo.get("DDC"),
-                naverBookInformation.items().get(0).author(),
-                naverBookInformation.items().get(0).discount(),
-                naverBookInformation.items().get(0).publisher(),
-                naverBookInformation.items().get(0).pubdate(),
-                naverBookInformation.items().get(0).description()
+                naverBookInformation.items.get(0).author,
+                naverBookInformation.items.get(0).discount,
+                naverBookInformation.items.get(0).publisher,
+                naverBookInformation.items.get(0).pubdate,
+                naverBookInformation.items.get(0).description
         );
     }
 }

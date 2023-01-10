@@ -23,7 +23,12 @@ public class NaverBookSearchAPI {
      * @return 네이버에서 요청된 정보를 반환합니다.
      */
     public NaverBookInformation getNaverbookApi(String clientId, String clientSecret, String isbn)  {
-        String text = URLEncoder.encode(isbn, StandardCharsets.UTF_8);
+        String text = null;
+        try {
+            text = URLEncoder.encode(isbn, String.valueOf(StandardCharsets.UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("인코딩 실패", e);
+        }
         String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text;
 
         Map<String, String>  requestHeaders = new HashMap<>();

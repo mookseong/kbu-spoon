@@ -7,10 +7,7 @@ import org.jsoup.select.Elements;
 import org.spoon.lib.data.BookCategory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class ParserBookInformation {
@@ -64,7 +61,7 @@ public class ParserBookInformation {
     public Map<String, String> getBookInformationByDocument() {
         Elements elements = document.getElementsByClass("col-md-10 detail-table-right");
         Map<String, String> toBookInfoList = new HashMap<>();
-        List<String> bookInfoTitle = List.of("자료유형", "청구기호", "ISBN", "DDC", "서명/저자", "가격", "발행사항");
+        List<String> bookInfoTitle = new ArrayList<>(Arrays.asList("자료유형", "청구기호", "ISBN", "DDC", "서명/저자", "가격", "발행사항"));
 
         elements.select("dl")
                 .stream()

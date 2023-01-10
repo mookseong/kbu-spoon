@@ -56,13 +56,18 @@ public class ParserBookCategory {
      * @return {@link BookCategoryType} 형식으로 된 값을 {@link String}형식인 값으로 변환해준다.
      */
     private String BookType(BookCategoryType model) {
-        return switch (model) {
-            case NEW_BOOK -> "book-new";
-            case BEST_BOOK -> "book-best";
-            case EBOOK_BOOK -> "book-ebook";
-            case RECOMMEND_BOOK -> "book-recommend";
-            default -> throw new RuntimeException("문자열 변환 오류 발생");
-        };
+        switch (model) {
+            case NEW_BOOK:
+                return "book-new";
+            case BEST_BOOK:
+                return "book-best";
+            case EBOOK_BOOK:
+                return "book-ebook";
+            case RECOMMEND_BOOK:
+                return "book-recommend";
+            default:
+                throw new RuntimeException("문자열 변환 오류 발생");
+        }
     }
 
     /**
