@@ -22,7 +22,7 @@ public class NaverBookSearchAPI {
      * @param isbn 책제목 또는 isbn 정보
      * @return 네이버에서 요청된 정보를 반환합니다.
      */
-    public NaverBookInformation getNaverbookApi(String clientId, String clientSecret, String isbn)  {
+    public NaverBookInformation getNaverApi(String clientId, String clientSecret, String isbn)  {
         String text = null;
         try {
             text = URLEncoder.encode(isbn, String.valueOf(StandardCharsets.UTF_8));
@@ -84,7 +84,6 @@ public class NaverBookSearchAPI {
 
     private String readBody(InputStream body){
         InputStreamReader streamReader = new InputStreamReader(body);
-
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
             StringBuilder responseBody = new StringBuilder();

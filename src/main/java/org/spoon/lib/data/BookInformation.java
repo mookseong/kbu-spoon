@@ -32,7 +32,9 @@ public class BookInformation {
         return number;
     }
 
-    public String getDdc() { return ddc; }
+    public String getDdc() {
+        return ddc;
+    }
 
     public String getAuthor() {
         return author;

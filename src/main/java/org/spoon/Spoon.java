@@ -23,7 +23,7 @@ public class Spoon {
      */
     public ArrayList<BookSearch> getBookSearchListBySearch(String word, int index) {
         ParserBookSearch parserBookSearch = new ParserBookSearch();
-        parserBookSearch.setParsingURL(word, 1);
+        parserBookSearch.setParsingURL(word, index);
 
         ArrayList<BookSearch> bookCategories = new ArrayList<>();
         Elements getSearchElement = parserBookSearch.getSearchListByDocument();
@@ -101,7 +101,7 @@ public class Spoon {
         ParserBookInformation parserBookInformation = new ParserBookInformation(url);
         Map<String,String> parserInfo = parserBookInformation.getBookInformationByDocument();
         NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
-        NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverbookApi(clientId, clientSecret, parserInfo.get("ISBN"));
+        NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, parserInfo.get("ISBN"));
         return matchBookInfo(parserInfo, naverBookInformation);
     }
     /**
@@ -116,7 +116,7 @@ public class Spoon {
         ParserBookInformation parserBookInformation = new ParserBookInformation(url);
         Map<String,String> parserInfo = parserBookInformation.getBookInformationByDocument();
         NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
-        NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverbookApi(clientId, clientSecret, isbn);
+        NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, isbn);
         return matchBookInfo(parserInfo, naverBookInformation);
     }
 

@@ -10,10 +10,7 @@ import org.spoon.lib.data.BookKeepInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ParserBookSearch {
-    String searchURL = "https://lib.bible.ac.kr/Search";
-    String homeURL = "https://lib.bible.ac.kr";
-    Document document;
+public class ParserBookSearch extends BaseParser{
 
     public void setParsingURL(String searchWord, int listIndex) {
         try {
@@ -23,7 +20,6 @@ public class ParserBookSearch {
             throw new RuntimeException("사이트 문서화 실패", e);
         }
     }
-
 
     /**
      * 도서관 홈페이지에서 필요한 부분을 추출한다.

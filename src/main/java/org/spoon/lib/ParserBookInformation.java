@@ -10,11 +10,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class ParserBookInformation {
-    Document document;
+public class ParserBookInformation extends BaseParser {
+
 
     /**
      * 메소드 생성시 검색 대상의 정보를 미리 생성합니다.
+     *
      * @param SearchURL 책 정보를 담고 있는 url
      */
     public ParserBookInformation(String SearchURL) {
@@ -66,12 +67,10 @@ public class ParserBookInformation {
         elements.select("dl")
                 .stream()
                 .filter(element ->
-                        bookInfoTitle
-                                .stream()
-                                .anyMatch(Predicate.isEqual(element.select("dt").text()))
+                        bookInfoTitle.stream().anyMatch(Predicate.isEqual(element.select("dt").text()))
                 )
                 .forEach(element -> {
-                    if (element.select("dt").text().trim().equals("ISBN") &&toBookInfoList.containsKey("ISBN")){
+                    if (element.select("dt").text().trim().equals("ISBN") && toBookInfoList.containsKey("ISBN")) {
                         return;
                     }
                     toBookInfoList.put(element.select("dt").text().trim(), element.select("dd").text().trim());
@@ -105,9 +104,10 @@ public class ParserBookInformation {
 
     /**
      * 책 관련 도서를 이미지 정보를 불러옵니다.
+     *
      * @return 이미지 정보를 추출하여 반환합니다.
      */
-    public String getBookImageByDocument(){
+    public String getBookImageByDocument() {
         return document.getElementsByClass("page-detail-title-image").select("a > img").attr("src");
     }
 

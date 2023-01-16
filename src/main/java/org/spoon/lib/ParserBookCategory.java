@@ -10,11 +10,8 @@ import org.spoon.lib.data.BookCategoryType;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ParserBookCategory {
-    String searchURL = "https://lib.bible.ac.kr/Search";
-    String homeURL = "https://lib.bible.ac.kr";
-    Document document;
-    BookCategoryType documentType;
+public class ParserBookCategory extends BaseParser{
+    private BookCategoryType documentType;
 
     /**
      * 메소드가 처음 초기화시 default 값으로 {@link BookCategoryType#RECENT_LOAN_BOOK}제외한 KBU 도서관 홈페이지에서 정보를 가져와 {@link Document}를 초기화를 진행한다.
@@ -63,10 +60,8 @@ public class ParserBookCategory {
                 return "book-best";
             case EBOOK_BOOK:
                 return "book-ebook";
-            case RECOMMEND_BOOK:
-                return "book-recommend";
             default:
-                throw new RuntimeException("문자열 변환 오류 발생");
+                throw new RuntimeException("현재 지원하지 않는 기능입니다.");
         }
     }
 
