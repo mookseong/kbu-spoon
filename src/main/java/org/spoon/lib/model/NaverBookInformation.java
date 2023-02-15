@@ -1,4 +1,4 @@
-package org.spoon.lib.data;
+package org.spoon.lib.model;
 
 import java.util.List;
 

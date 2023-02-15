@@ -1,4 +1,4 @@
-package org.spoon.lib.data;
+package org.spoon.lib.model;
 
 /**
  * kbu 도서관 검색 정보입니다.

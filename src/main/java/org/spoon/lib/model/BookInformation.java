@@ -1,4 +1,4 @@
-package org.spoon.lib.data;
+package org.spoon.lib.model;
 
 /**
  * kbu 도서관에 소장된 책의 자세한 정보입니다.

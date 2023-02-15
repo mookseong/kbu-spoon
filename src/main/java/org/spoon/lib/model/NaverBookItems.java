@@ -1,4 +1,4 @@
-package org.spoon.lib.data;
+package org.spoon.lib.model;
 
 /**
  * 네이버 api 요청 시 items 항목입니다.
