@@ -3,13 +3,14 @@ package org.spoon;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.spoon.lib.NaverBookSearchAPI;
-import org.spoon.lib.ParserBookCategory;
-import org.spoon.lib.ParserBookInformation;
-import org.spoon.lib.ParserBookSearch;
-import org.spoon.lib.data.*;
+import org.spoon.lib.*;
+import org.spoon.lib.category.ParserBookList;
+import org.spoon.lib.information.NaverBookSearchAPI;
+import org.spoon.lib.information.ParserBookDetail;
+import org.spoon.lib.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Spoon {
@@ -22,7 +23,7 @@ public class Spoon {
      * @return 반환형식은 {@link ArrayList<BookSearch>} 형식으로 반환됩니다.
      */
     public ArrayList<BookSearch> getBookSearchListBySearch(String word, int index) {
-        ParserBookSearch parserBookSearch = new ParserBookSearch();
+        ParserBookSearchModel parserBookSearch = new ParserBookSearchModel();
         parserBookSearch.setParsingURL(word, index);
 
         ArrayList<BookSearch> bookCategories = new ArrayList<>();
@@ -43,29 +44,10 @@ public class Spoon {
         return bookCategories;
     }
 
-    /**
-     * 도서관 홈페이지에서 인기도서, 신작도서, 전자도서, 추천도서를 추출하여 반환한다.
-     *
-     * @param model 추출하고자 하는 책 정보 요청한다. <p>추출 가능한 타입은 {@link BookCategoryType} 타입만 가능하다.</p>
-     * @return 반환시 {@link ArrayList<BookCategory>}형식으로 반환된다.
-     */
-    public ArrayList<BookCategory> getBookCategoryByParser(BookCategoryType model) {
-        ParserBookCategory parserBookCategory = new ParserBookCategory();
-        ArrayList<BookCategory> bookCategories = new ArrayList<>();
 
-        Element libHome = parserBookCategory.getCategoryByDocument();
-        Elements bookListByDocument = parserBookCategory.getBookListByDocument(libHome, model);
-
-        bookListByDocument.forEach(element ->
-                bookCategories.add(
-                        new BookCategory(
-                                element.attr("href"), //상세 정보를 이동하는 주소 등록
-                                element.getElementsByTag("img").attr("src"), //책 표지 정보 URL 형식으로 반환
-                                element.getElementsByTag("span").text() // 책 제목
-                        )
-                )
-        );
-        return bookCategories;
+    public List<BookCategory> getBookCategoryByParser(ParserBookList parserBookCategory ) {
+        Element element = parserBookCategory.extractBookDocument();
+        return  parserBookCategory.getBookList(element);
     }
 
     /**
@@ -74,11 +56,11 @@ public class Spoon {
      * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
     public BookInformation getInformationByParser(String url) {
-        ParserBookInformation parserBookInformation = new ParserBookInformation(url);
-        Map<String,String> parserInfo = parserBookInformation.getBookInformationByDocument();
+        ParserBookDetail parserBookInformation = new ParserBookDetail(url);
+        Map<String,String> parserInfo = parserBookInformation.getInformation();
         return new BookInformation(
-                parserBookInformation.getBookTitleByElements(),
-                parserBookInformation.getBookImageByDocument(),
+                parserBookInformation.getBookTitle(),
+                parserBookInformation.getBookImage(),
                 parserInfo.get("ISBN"),
                 parserInfo.get("청구기호"),
                 parserInfo.get("DDC"),
@@ -98,8 +80,8 @@ public class Spoon {
      * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
     public BookInformation getInformationByNaver(String clientId, String clientSecret, String url) {
-        ParserBookInformation parserBookInformation = new ParserBookInformation(url);
-        Map<String,String> parserInfo = parserBookInformation.getBookInformationByDocument();
+        ParserBookDetail parserBookInformation = new ParserBookDetail(url);
+        Map<String,String> parserInfo = parserBookInformation.getInformation();
         NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
         NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, parserInfo.get("ISBN"));
         return matchBookInfo(parserInfo, naverBookInformation);
@@ -113,8 +95,8 @@ public class Spoon {
      * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
     public BookInformation getInformationByNaver(String clientId, String clientSecret, String isbn, String url) {
-        ParserBookInformation parserBookInformation = new ParserBookInformation(url);
-        Map<String,String> parserInfo = parserBookInformation.getBookInformationByDocument();
+        ParserBookDetail parserBookInformation = new ParserBookDetail(url);
+        Map<String,String> parserInfo = parserBookInformation.getInformation();
         NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
         NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, isbn);
         return matchBookInfo(parserInfo, naverBookInformation);

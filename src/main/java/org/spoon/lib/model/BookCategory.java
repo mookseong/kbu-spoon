@@ -1,4 +1,4 @@
-package org.spoon.lib.data;
+package org.spoon.lib.model;
 
 /**
  * 도서관 홈페이지에 있는 책 정보를 리스트 형식으로 반환합니다.
