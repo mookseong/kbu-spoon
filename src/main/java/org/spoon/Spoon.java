@@ -6,7 +6,8 @@ import org.jsoup.select.Elements;
 import org.spoon.lib.*;
 import org.spoon.lib.category.ParserBookList;
 import org.spoon.lib.information.NaverBookSearchAPI;
-import org.spoon.lib.information.ParserBookDetail;
+import org.spoon.lib.information.ParserBookKbuDetail;
+import org.spoon.lib.information.ParserBookInformation;
 import org.spoon.lib.model.*;
 
 import java.util.ArrayList;
@@ -56,7 +57,8 @@ public class Spoon {
      * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
     public BookInformation getInformationByParser(String url) {
-        ParserBookDetail parserBookInformation = new ParserBookDetail(url);
+        ParserBookInformation parserBookInformation = new ParserBookKbuDetail();
+        parserBookInformation.setParsingURL(url);
         Map<String,String> parserInfo = parserBookInformation.getInformation();
         return new BookInformation(
                 parserBookInformation.getBookTitle(),
@@ -80,12 +82,14 @@ public class Spoon {
      * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
     public BookInformation getInformationByNaver(String clientId, String clientSecret, String url) {
-        ParserBookDetail parserBookInformation = new ParserBookDetail(url);
+        ParserBookInformation parserBookInformation = new ParserBookKbuDetail();
+        parserBookInformation.setParsingURL(url);
         Map<String,String> parserInfo = parserBookInformation.getInformation();
         NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
         NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, parserInfo.get("ISBN"));
         return matchBookInfo(parserInfo, naverBookInformation);
     }
+
     /**
      * 네이버 api 통해 정보를 중요한 데이터를 불러오고, 일부 정보를 도서관 홈페이지에서 정보를 가져옵니다.
      * @param clientId 애플리케이션 클라이언트 아이디
@@ -95,7 +99,8 @@ public class Spoon {
      * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
     public BookInformation getInformationByNaver(String clientId, String clientSecret, String isbn, String url) {
-        ParserBookDetail parserBookInformation = new ParserBookDetail(url);
+        ParserBookInformation parserBookInformation = new ParserBookKbuDetail();
+        parserBookInformation.setParsingURL(url);
         Map<String,String> parserInfo = parserBookInformation.getInformation();
         NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
         NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, isbn);

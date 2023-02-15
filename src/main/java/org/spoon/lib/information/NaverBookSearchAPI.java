@@ -1,8 +1,8 @@
-package org.spoon.lib;
+package org.spoon.lib.information;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.spoon.lib.data.NaverBookInformation;
+import org.spoon.lib.model.NaverBookInformation;
 
 import java.io.*;
 import java.net.HttpURLConnection;
