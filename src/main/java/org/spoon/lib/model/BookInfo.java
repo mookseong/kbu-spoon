@@ -4,7 +4,7 @@ package org.spoon.lib.model;
  * kbu 도서관에 소장된 책의 자세한 정보입니다.
  */
 
-public class BookInformation {
+public class BookInfo {
     private final String title;
     private final String image;
     private final String isbn;
@@ -70,7 +70,7 @@ public class BookInformation {
      * @param pubdate     책 출간일
      * @param description 책 설명
      */
-    public BookInformation(String title, String image, String isbn, String number, String ddc, String author, String discount, String publisher, String pubdate, String description) {
+    public BookInfo(String title, String image, String isbn, String number, String ddc, String author, String discount, String publisher, String pubdate, String description) {
         this.title = title;
         this.image = image;
         this.isbn = isbn;

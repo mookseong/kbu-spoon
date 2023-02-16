@@ -14,15 +14,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NaverBookSearchAPI {
+    private final String clientId;
+    private final String clientSecret;
 
     /**
-     * 책정보를 갖고
+     * 네이버 API와 통신하기 위해 API 키값을 지정합니다.
      * @param clientId 애플리케이션 클라이언트 아이디
      * @param clientSecret 애플리케이션 클라이언트 시크릿
+     */
+    public NaverBookSearchAPI(String clientId, String clientSecret) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+    }
+
+    /**
+     * 네이버 API 통해 책의 자세한 정보를 받습니다.
      * @param isbn 책제목 또는 isbn 정보
      * @return 네이버에서 요청된 정보를 반환합니다.
      */
-    public NaverBookInformation getNaverApi(String clientId, String clientSecret, String isbn)  {
+    public NaverBookInformation getNaverApi(String isbn)  {
         String text = null;
         try {
             text = URLEncoder.encode(isbn, String.valueOf(StandardCharsets.UTF_8));
@@ -35,8 +45,8 @@ public class NaverBookSearchAPI {
         ObjectMapper objectMapper = new ObjectMapper();
         NaverBookInformation bookApi = null;
 
-        requestHeaders.put("X-Naver-Client-Id", clientId);
-        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
+        requestHeaders.put("X-Naver-Client-Id", this.clientId);
+        requestHeaders.put("X-Naver-Client-Secret", this.clientSecret);
         String responseBody = get(apiURL,requestHeaders);
 
         try {
@@ -69,7 +79,6 @@ public class NaverBookSearchAPI {
         }
     }
 
-
     private HttpURLConnection connect(String apiUrl){
         try {
             URL url = new URL(apiUrl);
@@ -81,20 +90,16 @@ public class NaverBookSearchAPI {
         }
     }
 
-
     private String readBody(InputStream body){
         InputStreamReader streamReader = new InputStreamReader(body);
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
             StringBuilder responseBody = new StringBuilder();
 
-
             String line;
             while ((line = lineReader.readLine()) != null) {
                 responseBody.append(line);
             }
-
-
             return responseBody.toString();
         } catch (IOException e) {
             throw new RuntimeException("API 응답을 읽는 데 실패했습니다.", e);

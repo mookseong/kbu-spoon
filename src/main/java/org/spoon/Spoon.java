@@ -7,7 +7,8 @@ import org.spoon.lib.*;
 import org.spoon.lib.category.ParserBookList;
 import org.spoon.lib.information.NaverBookSearchAPI;
 import org.spoon.lib.information.ParserBookKbuDetail;
-import org.spoon.lib.information.ParserBookInformation;
+import org.spoon.lib.information.ParserBookDetail;
+import org.spoon.lib.information.ParserBookNaverDetail;
 import org.spoon.lib.model.*;
 
 import java.util.ArrayList;
@@ -54,24 +55,12 @@ public class Spoon {
     /**
      * 도서관 홈페이지에서 책 정보를 가져옵니다.
      * @param url 도서관 책 url  받습니다.
-     * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
+     * @return 데이터를 {@link BookInfo} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
-    public BookInformation getInformationByParser(String url) {
-        ParserBookInformation parserBookInformation = new ParserBookKbuDetail();
-        parserBookInformation.setParsingURL(url);
-        Map<String,String> parserInfo = parserBookInformation.getInformation();
-        return new BookInformation(
-                parserBookInformation.getBookTitle(),
-                parserBookInformation.getBookImage(),
-                parserInfo.get("ISBN"),
-                parserInfo.get("청구기호"),
-                parserInfo.get("DDC"),
-                parserInfo.get("저자"),
-                parserInfo.get("가격").replaceAll("[^0-9]",""),
-                parserInfo.get("발행사항"),
-                null,
-                null
-        );
+    public BookInfo getInformationByParser(String url) {
+        ParserBookDetail parserBookDetail = new ParserBookKbuDetail();
+        parserBookDetail.setParsingURL(url);
+        return parserBookDetail.getBookInformation();
     }
 
     /**
@@ -79,47 +68,11 @@ public class Spoon {
      * @param clientId 애플리케이션 클라이언트 아이디
      * @param clientSecret 애플리케이션 클라이언트 시크릿
      * @param url 도서관 책 url  받습니다.
-     * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
+     * @return 데이터를 {@link BookInfo} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
-    public BookInformation getInformationByNaver(String clientId, String clientSecret, String url) {
-        ParserBookInformation parserBookInformation = new ParserBookKbuDetail();
-        parserBookInformation.setParsingURL(url);
-        Map<String,String> parserInfo = parserBookInformation.getInformation();
-        NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
-        NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, parserInfo.get("ISBN"));
-        return matchBookInfo(parserInfo, naverBookInformation);
-    }
-
-    /**
-     * 네이버 api 통해 정보를 중요한 데이터를 불러오고, 일부 정보를 도서관 홈페이지에서 정보를 가져옵니다.
-     * @param clientId 애플리케이션 클라이언트 아이디
-     * @param clientSecret 애플리케이션 클라이언트 시크릿
-     * @param isbn 책제목 또는 isbn 정보
-     * @param url 도서관 책 url  받습니다.
-     * @return 데이터를 {@link BookInformation} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
-     */
-    public BookInformation getInformationByNaver(String clientId, String clientSecret, String isbn, String url) {
-        ParserBookInformation parserBookInformation = new ParserBookKbuDetail();
-        parserBookInformation.setParsingURL(url);
-        Map<String,String> parserInfo = parserBookInformation.getInformation();
-        NaverBookSearchAPI naverBookSearchAPi = new NaverBookSearchAPI();
-        NaverBookInformation naverBookInformation = naverBookSearchAPi.getNaverApi(clientId, clientSecret, isbn);
-        return matchBookInfo(parserInfo, naverBookInformation);
-    }
-
-
-    private BookInformation matchBookInfo(Map<String, String> parserInfo, NaverBookInformation naverBookInformation){
-        return new BookInformation(
-                naverBookInformation.items.get(0).title,
-                naverBookInformation.items.get(0).image,
-                naverBookInformation.items.get(0).isbn,
-                parserInfo.get("청구기호"),
-                parserInfo.get("DDC"),
-                naverBookInformation.items.get(0).author,
-                naverBookInformation.items.get(0).discount,
-                naverBookInformation.items.get(0).publisher,
-                naverBookInformation.items.get(0).pubdate,
-                naverBookInformation.items.get(0).description
-        );
+    public BookInfo getInformationByNaver(String clientId, String clientSecret, String url) {
+        ParserBookDetail parserBookDetail = new ParserBookNaverDetail(new NaverBookSearchAPI(clientId, clientSecret));
+        parserBookDetail.setParsingURL(url);
+        return parserBookDetail.getBookInformation();
     }
 }

@@ -6,13 +6,22 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.spoon.lib.model.BookCategory;
 import org.spoon.lib.model.BookInfo;
+import org.spoon.lib.model.NaverBookInformation;
+import org.spoon.lib.model.NaverBookItems;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-public class ParserBookKbuDetail extends BaseParserBookDetail implements ParserBookDetail {
+public class ParserBookNaverDetail extends BaseParserBookDetail implements ParserBookDetail {
 
     private final String searchURL = "https://lib.bible.ac.kr/Search";
+    private NaverBookItems naverBookApi;
+    private final NaverBookSearchAPI naverAPI;
+    private Map<String, String> parserInfo;
+
+    public ParserBookNaverDetail(NaverBookSearchAPI naverAPI) {
+        this.naverAPI = naverAPI;
+    }
 
     @Override
     public void setParsingURL(String parsingURL) {
@@ -20,6 +29,9 @@ public class ParserBookKbuDetail extends BaseParserBookDetail implements ParserB
             Connection conn = Jsoup.connect(parsingURL);
             this.document = conn.get();
             this.bookDetail = this.document.getElementsByClass(this.baseElementsClass);
+            this.parserInfo = getKbuBookInformation();
+            NaverBookInformation naverBookInformation = this.naverAPI.getNaverApi(parserInfo.get("ISBN"));
+            this.naverBookApi = naverBookInformation.items.get(0);
         } catch (IOException e) {
             throw new RuntimeException("사이트 문서화 실패", e);
         }
@@ -27,23 +39,22 @@ public class ParserBookKbuDetail extends BaseParserBookDetail implements ParserB
 
     @Override
     public String getBookTitle() {
-        return this.bookDetail.get(0).getElementsByClass("sponge-book-title").text();
+        return this.naverBookApi.title;
     }
 
     @Override
     public BookInfo getBookInformation() {
-        Map<String, String> parserInfo = getKbuBookInformation();
         return new BookInfo(
                 getBookTitle(),
                 getBookImage(),
-                parserInfo.get("ISBN"),
-                parserInfo.get("청구기호"),
-                parserInfo.get("DDC"),
-                parserInfo.get("저자"),
-                parserInfo.get("가격").replaceAll("[^0-9]", ""),
-                parserInfo.get("발행사항"),
-                null,
-                null
+                this.naverBookApi.isbn,
+                this.parserInfo.get("청구기호"),
+                this.parserInfo.get("DDC"),
+                this.naverBookApi.author,
+                this.naverBookApi.discount,
+                this.naverBookApi.publisher,
+                this.naverBookApi.pubdate,
+                this.naverBookApi.description
         );
     }
 
@@ -58,7 +69,7 @@ public class ParserBookKbuDetail extends BaseParserBookDetail implements ParserB
 
     @Override
     public String getBookImage() {
-        return this.document.getElementsByClass("page-detail-title-image").select("a > img").attr("src");
+        return naverBookApi.image;
     }
 
 }
