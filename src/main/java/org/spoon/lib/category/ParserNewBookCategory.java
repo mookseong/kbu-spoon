@@ -32,7 +32,7 @@ public class ParserNewBookCategory extends BaseParserCategory implements ParserB
     @Override
     public List<BookCategory> getBookList() {
         Element element = extractBookDocument().getElementById(this.documentType.getBookType());
-        Elements elements = Objects.requireNonNull(element).select("ul > li > a");
+        Elements elements = Objects.requireNonNull(element).select(this.bookQuery);
         return toArrayList(elements);
     }
 
@@ -43,18 +43,5 @@ public class ParserNewBookCategory extends BaseParserCategory implements ParserB
         return toArrayList(elements);
     }
 
-    private ArrayList<BookCategory> toArrayList(Elements elements){
-        ArrayList<BookCategory> arrayList = new ArrayList<>();
-        elements.forEach(i ->
-                arrayList.add(
-                        new org.spoon.lib.model.BookCategory(
-                                i.attr("href"), //상세 정보를 이동하는 주소 등록
-                                i.getElementsByTag("img").attr("src"), //책 표지 정보 URL 형식으로 반환
-                                i.getElementsByTag("span").text() // 책 제목
-                        )
-                )
-        );
-        return arrayList;
-    }
 
 }
