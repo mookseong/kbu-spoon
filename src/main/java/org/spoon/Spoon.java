@@ -2,18 +2,17 @@ package org.spoon;
 
 
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.spoon.lib.*;
 import org.spoon.lib.category.ParserBookList;
 import org.spoon.lib.information.NaverBookSearchAPI;
 import org.spoon.lib.information.ParserBookKbuDetail;
 import org.spoon.lib.information.ParserBookDetail;
 import org.spoon.lib.information.ParserBookNaverDetail;
 import org.spoon.lib.model.*;
+import org.spoon.lib.search.ParserBookSearch;
+import org.spoon.lib.search.ParserBookSearchModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Spoon {
 
@@ -24,28 +23,11 @@ public class Spoon {
      * @param index 검색된 페이지 주소를 입력합니다.
      * @return 반환형식은 {@link ArrayList<BookSearch>} 형식으로 반환됩니다.
      */
-    public ArrayList<BookSearch> getBookSearchListBySearch(String word, int index) {
-        ParserBookSearchModel parserBookSearch = new ParserBookSearchModel();
+    public List<BookSearch> getBookSearchListBySearch(String word, int index) {
+        ParserBookSearch parserBookSearch = new ParserBookSearchModel();
         parserBookSearch.setParsingURL(word, index);
-
-        ArrayList<BookSearch> bookCategories = new ArrayList<>();
-        Elements getSearchElement = parserBookSearch.getSearchListByDocument();
-
-        for (int i = 0; i < getSearchElement.size(); i++) {
-            bookCategories.add(
-                    new BookSearch(
-                            parserBookSearch.getBookTitle(getSearchElement, i),
-                            parserBookSearch.getBookEtc(getSearchElement, i),
-                            parserBookSearch.getBookImg(getSearchElement, i),
-                            parserBookSearch.getBookInformation(getSearchElement, i),
-                            parserBookSearch.getBookISBN(getSearchElement, i)
-                    )
-            );
-        }
-
-        return bookCategories;
+        return parserBookSearch.getBookSearchListBySearch();
     }
-
 
     public List<BookCategory> getBookCategoryByParser(ParserBookList parserBookCategory ) {
         Element element = parserBookCategory.extractBookDocument();

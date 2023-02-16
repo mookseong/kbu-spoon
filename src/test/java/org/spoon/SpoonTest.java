@@ -9,7 +9,6 @@ import org.spoon.lib.model.BookCategory;
 import org.spoon.lib.model.BookInfo;
 import org.spoon.lib.model.BookSearch;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class SpoonTest {
@@ -17,7 +16,7 @@ class SpoonTest {
     @Test
     void getBookSearchListBySearch() {
         Spoon spoon = new Spoon();
-        ArrayList<BookSearch> bookSearches = spoon.getBookSearchListBySearch("언어", 1);
+        List<BookSearch> bookSearches = spoon.getBookSearchListBySearch("코틀린", 1);
         for (BookSearch bookList :bookSearches){
             System.out.println("책 제목 : " + bookList.getTitle());
             System.out.println("책 사진 : " + bookList.getImage());
