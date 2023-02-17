@@ -15,13 +15,7 @@ import java.util.Objects;
 public class ParserNewBookCategory extends BaseParserCategory implements ParserBookList {
 
     public ParserNewBookCategory() {
-        try {
-            Connection conn = Jsoup.connect(homeURL);
-            this.document = conn.get();
-        } catch (IOException e) {
-            throw new RuntimeException("사이트 문서화 실패", e);
-        }
-        this.documentType = BookCategoryType.NEW_BOOK;
+        super("https://lib.bible.ac.kr", BookCategoryType.NEW_BOOK);
     }
 
     @Override
@@ -39,9 +33,7 @@ public class ParserNewBookCategory extends BaseParserCategory implements ParserB
     @Override
     public List<BookCategory> getBookList(Element element) {
         Element tmpElement = element.getElementById(this.documentType.getBookType());
-        Elements elements = Objects.requireNonNull(tmpElement).select("ul > li > a");
+        Elements elements = Objects.requireNonNull(tmpElement).select(this.bookQuery);
         return toArrayList(elements);
     }
-
-
 }

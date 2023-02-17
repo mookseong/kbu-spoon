@@ -8,20 +8,14 @@ import org.spoon.lib.model.BookCategory;
 import org.spoon.lib.model.BookCategoryType;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ParserEBookCategory extends BaseParserCategory implements ParserBookList {
 
+
     public ParserEBookCategory() {
-        try {
-            Connection conn = Jsoup.connect(homeURL);
-            this.document = conn.get();
-        } catch (IOException e) {
-            throw new RuntimeException("사이트 문서화 실패", e);
-        }
-        this.documentType = BookCategoryType.EBOOK_BOOK;
+        super("https://lib.bible.ac.kr", BookCategoryType.EBOOK_BOOK);
     }
 
     @Override
@@ -42,5 +36,4 @@ public class ParserEBookCategory extends BaseParserCategory implements ParserBoo
         Elements elements = Objects.requireNonNull(tmpElement).select(this.bookQuery);
         return toArrayList(elements);
     }
-
 }

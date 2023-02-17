@@ -23,8 +23,7 @@ public class Spoon {
      * @param index 검색된 페이지 주소를 입력합니다.
      * @return 반환형식은 {@link ArrayList<BookSearch>} 형식으로 반환됩니다.
      */
-    public List<BookSearch> getBookSearchListBySearch(String word, int index) {
-        ParserBookSearch parserBookSearch = new ParserBookSearchModel();
+    public List<BookSearch> getBookSearchListBySearch(ParserBookSearch parserBookSearch, String word, int index) {
         parserBookSearch.setParsingURL(word, index);
         return parserBookSearch.getBookSearchListBySearch();
     }
@@ -39,21 +38,7 @@ public class Spoon {
      * @param url 도서관 책 url  받습니다.
      * @return 데이터를 {@link BookInfo} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */
-    public BookInfo getInformationByParser(String url) {
-        ParserBookDetail parserBookDetail = new ParserBookKbuDetail();
-        parserBookDetail.setParsingURL(url);
-        return parserBookDetail.getBookInformation();
-    }
-
-    /**
-     * 네이버 api 통해 정보를 중요한 데이터를 불러오고, 일부 정보를 도서관 홈페이지에서 정보를 가져옵니다. <p>isbn 정보는 도서관 홈페이지에서 가져옵니다.</p></p>
-     * @param clientId 애플리케이션 클라이언트 아이디
-     * @param clientSecret 애플리케이션 클라이언트 시크릿
-     * @param url 도서관 책 url  받습니다.
-     * @return 데이터를 {@link BookInfo} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
-     */
-    public BookInfo getInformationByNaver(String clientId, String clientSecret, String url) {
-        ParserBookDetail parserBookDetail = new ParserBookNaverDetail(new NaverBookSearchAPI(clientId, clientSecret));
+    public BookInfo getInformationByParser(ParserBookDetail parserBookDetail, String url) {
         parserBookDetail.setParsingURL(url);
         return parserBookDetail.getBookInformation();
     }
