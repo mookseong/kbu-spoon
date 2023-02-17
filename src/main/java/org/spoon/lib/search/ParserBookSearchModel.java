@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.spoon.lib.model.BookKeepInfo;
-import org.spoon.lib.model.BookSearch;
+import org.spoon.lib.model.BookSearchList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public class ParserBookSearchModel implements ParserBookSearch {
     }
 
     @Override
-    public List<BookSearch> getBookSearchListBySearch() {
-        ArrayList<BookSearch> bookCategories = new ArrayList<>();
+    public List<BookSearchList> getBookSearchListBySearch() {
+        ArrayList<BookSearchList> bookCategories = new ArrayList<>();
 
         for (int i = 0; i < searchDocument.size(); i++) {
             bookCategories.add(ToBookSearch(i));
@@ -38,8 +38,8 @@ public class ParserBookSearchModel implements ParserBookSearch {
         return bookCategories;
     }
 
-    private BookSearch ToBookSearch(int index) {
-        return new BookSearch(
+    private BookSearchList ToBookSearch(int index) {
+        return new BookSearchList(
                 getBookTitle(index),
                 getBookEtc(index),
                 getBookImg(index),

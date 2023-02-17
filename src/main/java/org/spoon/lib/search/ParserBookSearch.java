@@ -1,7 +1,7 @@
 package org.spoon.lib.search;
 
 import org.spoon.lib.model.BookKeepInfo;
-import org.spoon.lib.model.BookSearch;
+import org.spoon.lib.model.BookSearchList;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface ParserBookSearch {
      * 책 검색 정보를 불러옵니다.
      * @return 검색정보를 List 형식으로 반환합니다.
      */
-    List<BookSearch> getBookSearchListBySearch();
+    List<BookSearchList> getBookSearchListBySearch();
 
     /**
      * 검색된 책 이미지 정보만 가져옵니다.
