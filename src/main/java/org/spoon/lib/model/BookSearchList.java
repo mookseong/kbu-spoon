@@ -3,7 +3,7 @@ package org.spoon.lib.model;
 /**
  * kbu 도서관 검색 정보입니다.
  */
-public class BookSearch {
+public class BookSearchList {
     private final String title;
     private final String etc;
     private final String image;
@@ -19,7 +19,7 @@ public class BookSearch {
      * @param info  도서 책정보 페이지
      * @param isbn  도서 isbn 정 보
      */
-    public BookSearch(String title, String etc, String image, String info, String isbn) {
+    public BookSearchList(String title, String etc, String image, String info, String isbn) {
         this.title = title;
         this.etc = etc;
         this.image = image;
