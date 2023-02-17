@@ -19,7 +19,7 @@ public class ParserBookNaverDetail extends BaseParserBookDetail implements Parse
     private final NaverBookSearchAPI naverAPI;
     private Map<String, String> parserInfo;
 
-    public ParserBookNaverDetail(String clientId, String clientSecret ) {
+    public ParserBookNaverDetail(String clientId, String clientSecret) {
         this.naverAPI = new NaverBookSearchAPI(clientId, clientSecret);
     }
 

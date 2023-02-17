@@ -3,13 +3,9 @@ package org.spoon;
 
 import org.jsoup.nodes.Element;
 import org.spoon.lib.category.ParserBookList;
-import org.spoon.lib.information.NaverBookSearchAPI;
-import org.spoon.lib.information.ParserBookKbuDetail;
 import org.spoon.lib.information.ParserBookDetail;
-import org.spoon.lib.information.ParserBookNaverDetail;
 import org.spoon.lib.model.*;
 import org.spoon.lib.search.ParserBookSearch;
-import org.spoon.lib.search.ParserBookSearchModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +24,14 @@ public class Spoon {
         return parserBookSearch.getBookSearchListBySearch();
     }
 
-    public List<BookCategory> getBookCategoryByParser(ParserBookList parserBookCategory ) {
+    public List<BookCategory> getBookCategoryByParser(ParserBookList parserBookCategory) {
         Element element = parserBookCategory.extractBookDocument();
-        return  parserBookCategory.getBookList(element);
+        return parserBookCategory.getBookList(element);
     }
 
     /**
      * 도서관 홈페이지에서 책 정보를 가져옵니다.
+     *
      * @param url 도서관 책 url  받습니다.
      * @return 데이터를 {@link BookInfo} 형식으로 반환합니다. 만약 데이터가 존재하지 않는다면 null 반환합니다.
      */

@@ -19,7 +19,8 @@ public class NaverBookSearchAPI {
 
     /**
      * 네이버 API와 통신하기 위해 API 키값을 지정합니다.
-     * @param clientId 애플리케이션 클라이언트 아이디
+     *
+     * @param clientId     애플리케이션 클라이언트 아이디
      * @param clientSecret 애플리케이션 클라이언트 시크릿
      */
     public NaverBookSearchAPI(String clientId, String clientSecret) {
@@ -29,10 +30,11 @@ public class NaverBookSearchAPI {
 
     /**
      * 네이버 API 통해 책의 자세한 정보를 받습니다.
+     *
      * @param isbn 책제목 또는 isbn 정보
      * @return 네이버에서 요청된 정보를 반환합니다.
      */
-    public NaverBookInformation getNaverApi(String isbn)  {
+    public NaverBookInformation getNaverApi(String isbn) {
         String text = null;
         try {
             text = URLEncoder.encode(isbn, String.valueOf(StandardCharsets.UTF_8));
@@ -41,28 +43,28 @@ public class NaverBookSearchAPI {
         }
         String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text;
 
-        Map<String, String>  requestHeaders = new HashMap<>();
+        Map<String, String> requestHeaders = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         NaverBookInformation bookApi = null;
 
         requestHeaders.put("X-Naver-Client-Id", this.clientId);
         requestHeaders.put("X-Naver-Client-Secret", this.clientSecret);
-        String responseBody = get(apiURL,requestHeaders);
+        String responseBody = get(apiURL, requestHeaders);
 
         try {
             bookApi = objectMapper.readValue(responseBody, NaverBookInformation.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("json 형식 변환 실패 : " +  responseBody, e);
+            throw new RuntimeException("json 형식 변환 실패 : " + responseBody, e);
         }
         return bookApi;
 
     }
 
-    private String get(String apiUrl, Map<String, String> requestHeaders){
+    private String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {
             con.setRequestMethod("GET");
-            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                 con.setRequestProperty(header.getKey(), header.getValue());
             }
 
@@ -79,10 +81,10 @@ public class NaverBookSearchAPI {
         }
     }
 
-    private HttpURLConnection connect(String apiUrl){
+    private HttpURLConnection connect(String apiUrl) {
         try {
             URL url = new URL(apiUrl);
-            return (HttpURLConnection)url.openConnection();
+            return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
             throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
         } catch (IOException e) {
@@ -90,7 +92,7 @@ public class NaverBookSearchAPI {
         }
     }
 
-    private String readBody(InputStream body){
+    private String readBody(InputStream body) {
         InputStreamReader streamReader = new InputStreamReader(body);
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {

@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 public abstract class BaseParserBookDetail {
     protected Document document;
     protected Elements bookDetail;
-    protected final String baseElementsClass= "col-md-10 detail-table-right";
+    protected final String baseElementsClass = "col-md-10 detail-table-right";
 
     protected Map<String, String> getKbuBookInformation() {
         Map<String, String> toBookInfoList = new HashMap<>();

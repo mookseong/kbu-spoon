@@ -1,14 +1,10 @@
 package org.spoon.lib.category;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.spoon.lib.model.BookCategory;
 import org.spoon.lib.model.BookCategoryType;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
