@@ -14,14 +14,7 @@ import java.util.Objects;
 
 public class ParserRentBookCategory extends BaseParserCategory implements ParserBookList {
     public ParserRentBookCategory() {
-        try {
-            String searchURL = "https://lib.bible.ac.kr/Search";
-            Connection conn = Jsoup.connect(searchURL);
-            this.document = conn.get();
-        } catch (IOException e) {
-            throw new RuntimeException("사이트 문서화 실패", e);
-        }
-        this.documentType = BookCategoryType.RECENT_RENT_BOOK;
+        super("https://lib.bible.ac.kr/Search", BookCategoryType.RECENT_RENT_BOOK);
     }
 
     @Override
@@ -42,5 +35,4 @@ public class ParserRentBookCategory extends BaseParserCategory implements Parser
         Elements elements = Objects.requireNonNull(tmpElement).select(this.bookQuery);
         return toArrayList(elements);
     }
-
 }
