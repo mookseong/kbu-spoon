@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class BaseParserCategory {
-    protected final String bookQuery = "ul > li > a";
     protected BookCategoryType documentType;
     protected Document document;
 
@@ -31,13 +30,13 @@ public abstract class BaseParserCategory {
 
     public List<BookCategory> getBookList() {
         Elements element = extractBookDocument().getElementsByClass(this.documentType.getClassType());
-        Elements elements = Objects.requireNonNull(element).select(this.bookQuery);
+        Elements elements = Objects.requireNonNull(element).select(this.documentType.getBookType());
         return toArrayList(elements);
     }
 
     public List<BookCategory> getBookList(Element element) {
         Elements tmpElement = element.getElementsByClass(this.documentType.getClassType());
-        Elements elements = Objects.requireNonNull(tmpElement).select(this.bookQuery);
+        Elements elements = Objects.requireNonNull(tmpElement).select(this.documentType.getBookType());
         return toArrayList(elements);
     }
 
