@@ -1,12 +1,9 @@
 package org.spoon.lib.category;
 
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.spoon.lib.model.BookCategory;
 import org.spoon.lib.model.BookCategoryType;
 
-import java.util.List;
-import java.util.Objects;
 
 public class ParserRentBookCategory extends BaseParserCategory implements ParserBookList {
     public ParserRentBookCategory() {
@@ -19,16 +16,11 @@ public class ParserRentBookCategory extends BaseParserCategory implements Parser
     }
 
     @Override
-    public List<BookCategory> getBookList() {
-        Elements element = extractBookDocument().getElementsByClass(this.documentType.getClassType());
-        Elements elements = Objects.requireNonNull(element).select(this.bookQuery);
-        return toArrayList(elements);
-    }
-
-    @Override
-    public List<BookCategory> getBookList(Element element) {
-        Elements tmpElement = element.getElementsByClass(this.documentType.getClassType());
-        Elements elements = Objects.requireNonNull(tmpElement).select(this.bookQuery);
-        return toArrayList(elements);
+    protected BookCategory toBookLocation(Element element) {
+        return new BookCategory(
+                element.attr("href"), //상세 정보를 이동하는 주소 등록
+                element.getElementsByTag("img").attr("src"), //책 표지 정보 URL 형식으로 반환
+                element.attr("title")
+        );
     }
 }

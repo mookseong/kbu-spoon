@@ -10,6 +10,8 @@ import org.spoon.lib.model.BookCategoryType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class BaseParserCategory {
     protected final String bookQuery = "ul > li > a";
@@ -25,6 +27,19 @@ public abstract class BaseParserCategory {
         }
         this.documentType = model;
     }
+    abstract Element extractBookDocument();
+
+    public List<BookCategory> getBookList() {
+        Elements element = extractBookDocument().getElementsByClass(this.documentType.getClassType());
+        Elements elements = Objects.requireNonNull(element).select(this.bookQuery);
+        return toArrayList(elements);
+    }
+
+    public List<BookCategory> getBookList(Element element) {
+        Elements tmpElement = element.getElementsByClass(this.documentType.getClassType());
+        Elements elements = Objects.requireNonNull(tmpElement).select(this.bookQuery);
+        return toArrayList(elements);
+    }
 
     protected ArrayList<BookCategory> toArrayList(Elements elements) {
         ArrayList<BookCategory> arrayList = new ArrayList<>();
@@ -34,18 +49,11 @@ public abstract class BaseParserCategory {
         return arrayList;
     }
 
-    private BookCategory toBookLocation(Element element) {
-        String titleByLocation = null;
-        if (documentType == BookCategoryType.RECENT_RENT_BOOK) {
-            titleByLocation = element.attr("title"); // 책 제목
-        }
-        if (documentType != BookCategoryType.RECENT_RENT_BOOK){
-            titleByLocation = element.getElementsByTag("span").text();
-        }
+    protected BookCategory toBookLocation(Element element) {
         return new BookCategory(
                 element.attr("href"), //상세 정보를 이동하는 주소 등록
                 element.getElementsByTag("img").attr("src"), //책 표지 정보 URL 형식으로 반환
-                titleByLocation
+                element.getElementsByTag("span").text()
         );
     }
 }
