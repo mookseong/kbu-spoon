@@ -41,7 +41,7 @@ dependencies {
 - `jackson-annotations`
     - `jackson`은 NaverAPI를 사용시 Response을 매칭 하기 위해 `ObjectMapper` 사용합니다.
 
-`Jsoup`은 KBU 홈페에지에서 가져와 위해 필수로 사용되는 라이브러리입니다. `jackson`은 NaverAPI를 사용하지 않는다면 설치하지 않으셔도 됩니다.
+`Jsoup`은 html를 가져와 데이터를 처리하기 위해 필수로 사용되는 라이브러리입니다. `jackson`은 NaverAPI를 사용하지 않는다면 설치하지 않으셔도 됩니다.
 
 ## License
 [MIT License](License).
