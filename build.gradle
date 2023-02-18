@@ -3,8 +3,16 @@ plugins {
     id 'maven-publish'
 }
 
-group 'org.spoon'
+group 'com.github.mookseong'
 version '0.1.0-alpha'
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
 
 repositories {
     mavenCentral()
@@ -13,16 +21,15 @@ repositories {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'org.spoon'
-            artifactId = 'kbu-spoon'
-            version = '0.1.0-alpha'
-
             from components.java
+
+            groupId 'org.spoon'
+            artifactId 'kbu-spoon'
+            version '0.1.0-alpha'
+
         }
     }
 }
-
-
 
 
 dependencies {
