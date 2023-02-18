@@ -1,10 +1,13 @@
 package org.spoon.lib.information;
 
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.spoon.lib.model.BookCategory;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -12,6 +15,16 @@ public abstract class BaseParserBookDetail {
     protected Document document;
     protected Elements bookDetail;
     protected final String baseElementsClass = "col-md-10 detail-table-right";
+
+    public void setParsingURL(String parsingURL) {
+        try {
+            Connection conn = Jsoup.connect(parsingURL);
+            this.document = conn.get();
+            this.bookDetail = this.document.getElementsByClass(this.baseElementsClass);
+        } catch (IOException e) {
+            throw new RuntimeException("사이트 문서화 실패", e);
+        }
+    }
 
     protected Map<String, String> getKbuBookInformation() {
         Map<String, String> toBookInfoList = new HashMap<>();
@@ -42,5 +55,13 @@ public abstract class BaseParserBookDetail {
                 element.getElementsByTag("img").attr("src"),
                 element.attr("title")
         );
+    }
+
+    public List<BookCategory> getRelatedBook() {
+        ArrayList<BookCategory> bookCategories = new ArrayList<>();
+        for (Element element : getRelatedList()) {
+            bookCategories.add(toBookCategory(element));
+        }
+        return bookCategories;
     }
 }

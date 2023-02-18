@@ -4,7 +4,6 @@ import org.spoon.lib.model.BookCategory;
 import org.spoon.lib.model.BookInfo;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ParserBookDetail {
 

@@ -1,15 +1,9 @@
 package org.spoon.lib.information;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.spoon.lib.model.BookCategory;
 import org.spoon.lib.model.BookInfo;
 import org.spoon.lib.model.NaverBookInformation;
 import org.spoon.lib.model.NaverBookItems;
 
-import java.io.*;
 import java.util.*;
 
 public class ParserBookNaverDetail extends BaseParserBookDetail implements ParserBookDetail {
@@ -25,16 +19,10 @@ public class ParserBookNaverDetail extends BaseParserBookDetail implements Parse
 
     @Override
     public void setParsingURL(String parsingURL) {
-        try {
-            Connection conn = Jsoup.connect(parsingURL);
-            this.document = conn.get();
-            this.bookDetail = this.document.getElementsByClass(this.baseElementsClass);
-            this.parserInfo = getKbuBookInformation();
-            NaverBookInformation naverBookInformation = this.naverAPI.getNaverApi(parserInfo.get("ISBN"));
-            this.naverBookApi = naverBookInformation.items.get(0);
-        } catch (IOException e) {
-            throw new RuntimeException("사이트 문서화 실패", e);
-        }
+        super.setParsingURL(parsingURL);
+        this.parserInfo = getKbuBookInformation();
+        NaverBookInformation naverBookInformation = this.naverAPI.getNaverApi(parserInfo.get("ISBN"));
+        this.naverBookApi = naverBookInformation.items.get(0);
     }
 
     @Override
@@ -58,14 +46,6 @@ public class ParserBookNaverDetail extends BaseParserBookDetail implements Parse
         );
     }
 
-    @Override
-    public List<BookCategory> getRelatedBook() {
-        ArrayList<BookCategory> bookCategories = new ArrayList<>();
-        for (Element element : getRelatedList()) {
-            bookCategories.add(toBookCategory(element));
-        }
-        return bookCategories;
-    }
 
     @Override
     public String getBookImage() {
