@@ -23,7 +23,7 @@ allprojects {
 }
 ```
 
-1. dependency에 추가해주세요
+2. dependency에 추가해주세요
 
 ```groovy
 dependencies {
