@@ -5,11 +5,8 @@ import org.jsoup.select.Elements;
 import org.spoon.notice.model.PostNoticeList;
 import org.spoon.notice.model.PostNoticeType;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ParserNoticeLibList extends BaseParserNoticeList implements ParseNoticeList {
-    public ParserNoticeLibList(String pageIndex) {
+    public ParserNoticeLibList(int pageIndex) {
         super(PostNoticeType.KBU_LIB_NOTICE, pageIndex);
         this.postQuery = "dl";
     }

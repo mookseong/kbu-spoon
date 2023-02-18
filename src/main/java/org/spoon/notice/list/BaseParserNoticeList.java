@@ -19,14 +19,14 @@ public abstract class BaseParserNoticeList {
     protected Document document;
 
 
-    public BaseParserNoticeList(PostNoticeType postNoticeType, String pageIndex) {
+    public BaseParserNoticeList(PostNoticeType postNoticeType, int pageIndex) {
         this.postNoticeType = postNoticeType;
         this.parsingUrl = postNoticeType.getParsingUrl();
         setParsingURL(pageIndex);
     }
     abstract Elements extractPostDocument();
 
-    public void setParsingURL(String pageIndex) {
+    public void setParsingURL(int pageIndex) {
         try {
             Connection conn = Jsoup.connect(this.parsingUrl + pageIndex);
             this.document = conn.get();

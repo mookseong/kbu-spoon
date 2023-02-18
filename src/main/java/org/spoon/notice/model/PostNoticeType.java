@@ -41,10 +41,10 @@ public enum PostNoticeType {
             "https://lib.bible.ac.kr"
     ),
     KBU_AINAVI_NOTICE("https://ainavi.bible.ac.kr/ko/guide/notice/list/",
-            "",
-            "",
-            "",
-            "",
+            "span.loopnum",
+            "span.title > a",
+            "span.name > span",
+            "span.reg_date > time",
             "https://ainavi.bible.ac.kr"
     );
     private final String parsingUrl;

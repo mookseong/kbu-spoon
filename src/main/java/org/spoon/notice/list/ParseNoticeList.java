@@ -13,7 +13,7 @@ public interface ParseNoticeList {
      * kbu 페이지에서 불러올 url 통해 불러와 저장합니다.
      * @param pageIndex 페이지 인덱스
      */
-    void setParsingURL(String pageIndex);
+    void setParsingURL(int pageIndex);
 
     /**
      * 도서관 입력된 정보를 토대로 도서관 정보를 추출합니다.
