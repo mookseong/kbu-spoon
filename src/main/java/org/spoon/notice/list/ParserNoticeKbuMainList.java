@@ -8,7 +8,6 @@ import org.spoon.notice.model.PostNoticeType;
 import java.util.List;
 
 public class ParserNoticeKbuMainList extends BaseParserNoticeList implements ParseNoticeList {
-    private final String postQuery;
 
     public ParserNoticeKbuMainList(String pageIndex) {
         super(PostNoticeType.KBU_MAIN_NOTICE, pageIndex);
@@ -16,13 +15,8 @@ public class ParserNoticeKbuMainList extends BaseParserNoticeList implements Par
     }
 
     @Override
-    public Element extractPostDocument() {
-        return this.document.getElementById("ModuleBoardListForm");
+    public Elements extractPostDocument() {
+        return this.document.getElementsByClass("black");
     }
 
-    @Override
-    public List<PostNoticeList> getPostList() {
-        Elements elements = extractPostDocument().select(this.postQuery);
-        return toArrayList(elements);
-    }
 }

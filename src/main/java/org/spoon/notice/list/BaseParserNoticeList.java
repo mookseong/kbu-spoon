@@ -15,6 +15,7 @@ import java.util.List;
 public abstract class BaseParserNoticeList {
     protected final String parsingUrl;
     protected final PostNoticeType postNoticeType;
+    protected String postQuery;
     protected Document document;
 
 
@@ -23,6 +24,7 @@ public abstract class BaseParserNoticeList {
         this.parsingUrl = postNoticeType.getParsingUrl();
         setParsingURL(pageIndex);
     }
+    abstract Elements extractPostDocument();
 
     public void setParsingURL(String pageIndex) {
         try {
@@ -33,6 +35,11 @@ public abstract class BaseParserNoticeList {
         }
     }
 
+    public List<PostNoticeList> getPostList() {
+        Elements elements = extractPostDocument().select(this.postQuery);
+        return toArrayList(elements);
+    }
+
     protected List<PostNoticeList> toArrayList(Elements elements) {
         ArrayList<PostNoticeList> arrayList = new ArrayList<>();
         for (Element element : elements) {
@@ -41,7 +48,7 @@ public abstract class BaseParserNoticeList {
         return arrayList;
     }
 
-    private PostNoticeList toPostNoticeList(Element element) {
+    protected PostNoticeList toPostNoticeList(Element element) {
         return new PostNoticeList(
                 element.select(this.postNoticeType.getSelectNum()).text(),
                 element.select(this.postNoticeType.getSelectTitle()).text(),

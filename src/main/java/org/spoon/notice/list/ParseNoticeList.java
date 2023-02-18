@@ -1,9 +1,11 @@
 package org.spoon.notice.list;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.spoon.notice.model.PostNoticeList;
 
 import java.util.List;
+import java.util.Objects;
 
 public interface ParseNoticeList {
 
@@ -17,7 +19,7 @@ public interface ParseNoticeList {
      * 도서관 입력된 정보를 토대로 도서관 정보를 추출합니다.
      * @return {@code Element} 형식으로 변경하여 추출합니다.
      */
-    Element extractPostDocument();
+    Elements extractPostDocument();
 
     /**
      * {@code Element}형식으로 된 정보에서 책 정보만 추출합니다.
